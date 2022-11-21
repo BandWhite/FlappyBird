@@ -14,10 +14,11 @@ ABirdPawn::ABirdPawn()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 
 	//渲染能力节点
-	UPaperFlipbookComponent* FlipBookComponent =  CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("FlipBookComponent"));
+	FlipBookComponent =  CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("FlipBookComponent"));
 
 	//渲染节点附到根节点
 	FlipBookComponent->SetupAttachment(RootComponent);
+	
 	
 	
 }
