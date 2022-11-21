@@ -3,6 +3,9 @@
 
 #include "BirdPawn.h"
 #include "PaperFlipbookComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "PaperFlipbook.h"
 
 // Sets default values
 ABirdPawn::ABirdPawn()
@@ -18,8 +21,28 @@ ABirdPawn::ABirdPawn()
 
 	//渲染节点附到根节点
 	FlipBookComponent->SetupAttachment(RootComponent);
+
+	//导入鸟的动画资源
+	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> BirdFlipBook(TEXT("PaperFlipbook'/Game/FlappyBird/FlipBooks/Birds/PFB_BlueBird.PFB_BlueBird'"));
+	if(BirdFlipBook.Object)
+	{
+		FlipBookComponent->SetFlipbook(BirdFlipBook.Object);
+	}
 	
+	//构建相机
+	//构建吊臂
+	USpringArmComponent* SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	SpringArmComponent->SetupAttachment(RootComponent);
+	//构建相机
+	UCameraComponent* CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetupAttachment(SpringArmComponent);
+	//相机改为正交模式
+	CameraComponent->ProjectionMode = ECameraProjectionMode::Orthographic;
 	
+	//调整相机旋转
+	SpringArmComponent->SetRelativeRotation(FRotator(0,-90,0));
+	//关闭摄像机的碰撞测试
+	SpringArmComponent->bDoCollisionTest = false;
 	
 }
 

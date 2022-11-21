@@ -15,4 +15,8 @@ class FLAPPYBIRD_API AFlappyBirdGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 public:
 	AFlappyBirdGameModeBase();
+	virtual void BeginPlay() override;
+private:
+	UPROPERTY()
+	class ABgActor* BgActor;
 };
