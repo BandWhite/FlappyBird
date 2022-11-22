@@ -2,8 +2,13 @@
 
 
 #include "PipelineActor.h"
+
+#include "BirdGameStateBase.h"
+#include "FlappyBirdGameModeBase.h"
 #include "PaperSprite.h"
 #include "PaperSpriteComponent.h"
+#include "GameFramework/GameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APipelineActor::APipelineActor()
@@ -44,8 +49,9 @@ APipelineActor::APipelineActor()
 	}
 
 	Speed = 100.f;
-	bRun = false;
+	bRun = true;
 	GroupInterval = 190;
+	bAddCoin = false;
 }
 
 // Called when the game starts or when spawned
@@ -53,7 +59,7 @@ void APipelineActor::BeginPlay()
 {
 	Super::BeginPlay();
 	RestPieGroups();
-	bRun = true;
+	CoinSound = LoadObject<USoundBase>(nullptr,TEXT("SoundWave'/Game/FlappyBird/Sounds/coin.coin'"));
 }
 
 void APipelineActor::RestPieGroups()
@@ -85,6 +91,21 @@ void APipelineActor::UpdatePipeGroupPosition(float DeltaTime)
 	for (int32 i = 0; i < 3; ++i)
 	{
 		PipeGroups[i]->AddLocalOffset(FVector(_Speed, 0, 0));
+		if (PipeGroups[i]->GetRelativeLocation().X < -90 && !bAddCoin)
+		{
+			UGameplayStatics::PlaySound2D(GetWorld(), CoinSound);
+			bAddCoin = true;
+			AFlappyBirdGameModeBase* CurrentGm = Cast<AFlappyBirdGameModeBase>(GetWorld()->GetAuthGameMode());
+			if (CurrentGm)
+			{
+				ABirdGameStateBase* GameStateBase = CurrentGm->GetGameState<ABirdGameStateBase>();
+				if (GameStateBase)
+				{
+					GameStateBase->AddScore();
+				}
+			}
+		}
+
 		if (PipeGroups[i]->GetRelativeLocation().X < -144)
 		{
 			int32 Index = i - 1;
@@ -95,6 +116,7 @@ void APipelineActor::UpdatePipeGroupPosition(float DeltaTime)
 			PipeGroups[i]->SetRelativeLocation(
 				FVector(PipeGroups[Index]->GetRelativeLocation().X + GroupInterval, 0, 0));
 			RandomPipeGroupZ(PipeGroups[i]);
+			bAddCoin = false;
 		}
 	}
 }

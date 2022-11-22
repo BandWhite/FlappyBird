@@ -4,6 +4,7 @@
 #include "FlappyBirdGameModeBase.h"
 
 #include "BgActor.h"
+#include "BirdGameStateBase.h"
 #include "BirdPawn.h"
 #include "PipelineActor.h"
 
@@ -11,6 +12,8 @@ AFlappyBirdGameModeBase::AFlappyBirdGameModeBase()
 {
 	//设置启动pawn
 	DefaultPawnClass = ABirdPawn::StaticClass();
+	//设置GameState
+	GameStateClass = ABirdGameStateBase::StaticClass();
 }
 
 void AFlappyBirdGameModeBase::BeginPlay()
@@ -20,6 +23,6 @@ void AFlappyBirdGameModeBase::BeginPlay()
 	LandActor = GetWorld()->SpawnActor<ALandActor>(ALandActor::StaticClass(), FVector(0, 0, -270),
 	                                               FRotator::ZeroRotator);
 
-	PipelineActor = GetWorld()->SpawnActor<APipelineActor>(APipelineActor::StaticClass(), FVector(0, -2, 0 ),
+	PipelineActor = GetWorld()->SpawnActor<APipelineActor>(APipelineActor::StaticClass(), FVector(0, -2, 0),
 	                                                       FRotator(0, 0, 0));
 }

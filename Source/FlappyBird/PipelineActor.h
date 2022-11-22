@@ -34,4 +34,9 @@ private:
 	float Speed; //速度
 	bool bRun; //管道滚动
 	float GroupInterval;//管道间隔
+
+	UPROPERTY()
+	class USoundBase* CoinSound;
+
+	bool bAddCoin;
 };
