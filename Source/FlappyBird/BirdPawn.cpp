@@ -140,6 +140,7 @@ void ABirdPawn::ChangeState(EBirdState::Type State)
 	case EBirdState::EBS_Idle:
 		break;
 	case EBirdState::EBS_Fly:
+		//开启虚拟物理
 		FlipBookComponent->SetSimulatePhysics(true);
 		break;
 	case EBirdState::EBS_Dead:
