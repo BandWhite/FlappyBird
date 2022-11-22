@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LandActor.h"
 #include "GameFramework/GameModeBase.h"
 #include "FlappyBirdGameModeBase.generated.h"
 
@@ -19,4 +20,10 @@ public:
 private:
 	UPROPERTY()
 	class ABgActor* BgActor;
+
+	UPROPERTY()
+	class ALandActor* LandActor;
+
+	UPROPERTY()
+	class APipelineActor* PipelineActor;
 };
