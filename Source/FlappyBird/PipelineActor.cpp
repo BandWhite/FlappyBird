@@ -48,8 +48,7 @@ APipelineActor::APipelineActor()
 		PipeGroups.Add(Group);
 	}
 
-	Speed = 100.f;
-	bRun = true;
+	Speed = 0.f;
 	GroupInterval = 190;
 	bAddCoin = false;
 }
@@ -58,11 +57,11 @@ APipelineActor::APipelineActor()
 void APipelineActor::BeginPlay()
 {
 	Super::BeginPlay();
-	RestPieGroups();
+	ResetPieGroups();
 	CoinSound = LoadObject<USoundBase>(nullptr,TEXT("SoundWave'/Game/FlappyBird/Sounds/coin.coin'"));
 }
 
-void APipelineActor::RestPieGroups()
+void APipelineActor::ResetPieGroups()
 {
 	for (int32 i = 0; i < 3; ++i)
 	{
@@ -80,7 +79,7 @@ void APipelineActor::RandomPipeGroupZ(USceneComponent* PipeGroup)
 
 void APipelineActor::UpdatePipeGroupPosition(float DeltaTime)
 {
-	if (!bRun)
+	if (!Speed)
 	{
 		return;
 	}
@@ -127,4 +126,9 @@ void APipelineActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdatePipeGroupPosition(DeltaTime);
+}
+
+void APipelineActor::SetSpeed(float NewSpeed)
+{
+	this->Speed = NewSpeed;
 }

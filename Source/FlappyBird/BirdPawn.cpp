@@ -2,6 +2,8 @@
 
 
 #include "BirdPawn.h"
+
+#include "FlappyBirdGameModeBase.h"
 #include "PaperFlipbookComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -64,9 +66,9 @@ void ABirdPawn::BeginPlay()
 
 void ABirdPawn::DoJump()
 {
-	if (CurrentState == EBirdState::EBS_Idle)
+	if (CurrentState != EBirdState::EBS_Fly)
 	{
-		ChangeState(EBirdState::EBS_Fly);
+		return;
 	}
 	//移除原有力
 	FlipBookComponent->SetPhysicsLinearVelocity(FVector::ZeroVector);
@@ -96,14 +98,18 @@ void ABirdPawn::Init()
 		BodyInstance->bLockXTranslation = true;
 		BodyInstance->bLockYTranslation = true;
 
-		BodyInstance->CreateDOFLock();//调用锁定
+		BodyInstance->CreateDOFLock(); //调用锁定
 	}
 }
 
 void ABirdPawn::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                                FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("TTTTTTTTTTTTTTTTTTT"))
+	AFlappyBirdGameModeBase* GameMode = Cast<AFlappyBirdGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode)
+	{
+		GameMode->ChangeState(EGameState::EGS_Over);
+	}
 }
 
 void ABirdPawn::UpdateFace()
@@ -138,6 +144,9 @@ void ABirdPawn::ChangeState(EBirdState::Type State)
 	switch (State)
 	{
 	case EBirdState::EBS_Idle:
+		FlipBookComponent->SetRelativeLocation(FVector(-80, 0, 0));
+		FlipBookComponent->SetRelativeRotation(FRotator::ZeroRotator);
+		FlipBookComponent->SetSimulatePhysics(false);
 		break;
 	case EBirdState::EBS_Fly:
 		//开启虚拟物理

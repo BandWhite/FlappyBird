@@ -10,18 +10,19 @@ UCLASS()
 class FLAPPYBIRD_API ALandActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ALandActor();
-
+	void SetSpeed(float Speed);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void UpdateLandLocation(float DeltaTime);
-	
-public:	
+
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 private:

@@ -27,7 +27,7 @@ ALandActor::ALandActor()
 	LandSpriteRender->SetSprite(LandSource.Object);
 	LandSpriteRenderNext->SetSprite(LandSource.Object);
 
-	Speed = 100.f;
+	Speed = 0.f;
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +41,7 @@ void ALandActor::BeginPlay()
 
 void ALandActor::UpdateLandLocation(float DeltaTime)
 {
-	if (!LandSpriteRender || !LandSpriteRenderNext)
+	if (!LandSpriteRender || !LandSpriteRenderNext || !Speed)
 	{
 		return;
 	}
@@ -61,6 +61,11 @@ void ALandActor::UpdateLandLocation(float DeltaTime)
 	{
 		LandSpriteRenderNext->SetRelativeLocation(FVector(LandSpriteRender->GetRelativeLocation().X + 336, 0, 0));
 	}
+}
+
+void ALandActor::SetSpeed(float NewSpeed)
+{
+	this->Speed = NewSpeed;
 }
 
 // Called every frame

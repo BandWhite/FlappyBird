@@ -15,11 +15,11 @@ public:
 	// Sets default values for this actor's properties
 	APipelineActor();
 
+	void ResetPieGroups();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void RestPieGroups();
 
 	void RandomPipeGroupZ(class USceneComponent* PipeGroup);
 
@@ -30,9 +30,10 @@ public:
 
 	TArray<USceneComponent*> PipeGroups;
 
+	void SetSpeed(float Speed);
+
 private:
 	float Speed; //速度
-	bool bRun; //管道滚动
 	float GroupInterval;//管道间隔
 
 	UPROPERTY()
